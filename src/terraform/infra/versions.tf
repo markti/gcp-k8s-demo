@@ -1,20 +1,19 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.17"
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.1.0"
     }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.5.1"
     }
   }
-  backend "s3" {
+  backend "gcs" {
   }
 }
 
-# Configure the AWS Provider
-provider "aws" {
+# Configure the GCP Provider
+provider "google" {
   region = var.primary_region
 }
-

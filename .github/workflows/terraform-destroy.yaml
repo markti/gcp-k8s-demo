@@ -52,7 +52,7 @@ jobs:
         GOOGLE_APPLICATION_CREDENTIALS: gcp-terraform.json
         BACKEND_BUCKET_NAME: ${{ vars.BACKEND_BUCKET_NAME }}
         BACKEND_KEY: ${{ vars.APPLICATION_NAME }}-${{ vars.ENVIRONMENT_NAME }}
-        TF_VAR_gcp_project: ${{ vars.GOOGLE_PROJECT }}
+        TF_VAR_gcp_organization: ${{ vars.GCP_ORGANIZATION_ID }}
       working-directory: ${{ vars.TERRAFORM_WORKING_DIRECTORY }}
       run: |
         terraform init \

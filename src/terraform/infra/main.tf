@@ -7,4 +7,5 @@ resource "google_project" "main" {
 resource "random_string" "project_id" {
   length  = 8
   special = false
+  upper   = false
 }

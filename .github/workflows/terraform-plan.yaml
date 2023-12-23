@@ -29,6 +29,22 @@ jobs:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
         terraform_wrapper: false
 
+    - name: Create Secret File for Backend
+      env:
+        GOOGLE_BACKEND_CREDENTIALS: ${{ secrets.GOOGLE_BACKEND_CREDENTIALS }}
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: |
+        # Create a local file with the secret value
+        echo -n "$GOOGLE_BACKEND_CREDENTIALS" > gcp-backend.json
+
+    - name: Create Secret File for Terraform
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: |
+        # Create a local file with the secret value
+        echo -n "$GOOGLE_APPLICATION_CREDENTIALS" > gcp-terraform.json
+
     - id: plan
       name: Terraform Plan
       env:

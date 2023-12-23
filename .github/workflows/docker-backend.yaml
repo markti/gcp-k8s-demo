@@ -63,6 +63,12 @@ jobs:
           -backend-config='prefix='$BACKEND_KEY
 
         terraform apply -auto-approve
+    
+    - name: Set Project ID Output
+      id: set_output
+      run: |
+        project_id=$(terraform output -raw project_id)
+        echo "project_id=$project_id" >> $GITHUB_ENV
 
   build:
     runs-on: ubuntu-latest
@@ -120,34 +126,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - id: setup
-      name: Setup `terraform`
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ env.TERRAFORM_VERSION }}
-        terraform_wrapper: false
-
-    - id: terraform
-      name: Terraform Output
-      env:
-        AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        BACKEND_BUCKET_NAME: ${{ vars.BACKEND_BUCKET_NAME }}
-        BACKEND_REGION: ${{ vars.BACKEND_REGION }}
-        BACKEND_KEY: ${{ vars.APPLICATION_NAME }}-${{ vars.ENVIRONMENT_NAME }}
-      working-directory: ${{ vars.TERRAFORM_WORKING_DIRECTORY }}
-      run: |
-        terraform init \
-          -backend-config='bucket='$BACKEND_BUCKET_NAME \
-          -backend-config='region='$BACKEND_REGION \
-          -backend-config='key='$BACKEND_KEY
-
-        terraform apply -auto-approve
-
-        registry_endpoint=$(terraform output -raw registry_endpoint)
-        echo $registry_endpoint
-        echo "registry_endpoint=$registry_endpoint" >> "$GITHUB_OUTPUT"
-
     - id: image-version
       name: Generate Version Number
       run: |
@@ -159,13 +137,13 @@ jobs:
     - name: Login to Azure Container Registry
       uses: docker/login-action@v3
       with:
-        registry: ${{ steps.terraform.outputs.registry_endpoint }}
-        username: ${{ vars.DOCKER_ARM_CLIENT_ID }}
-        password: ${{ secrets.DOCKER_ARM_CLIENT_SECRET }}
+        registry: gcr.io
+        username: _json_key
+        password: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
     - name: Build and push Docker image to ACR
       uses: docker/build-push-action@v5
       with:
         context: ${{ env.DOCKER_WORKING_DIRECTORY }}
         push: true
-        tags: ${{ steps.terraform.outputs.registry_endpoint }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-version.outputs.version }}
+        tags: ${{ needs.terraform-apply.outputs.project_id }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-version.outputs.version }}

@@ -19,6 +19,9 @@ jobs:
   terraform-apply:
     runs-on: ubuntu-latest
 
+    outputs:
+      project_id: ${{ steps.apply.outputs.project_id }}
+
     environment:
       name: ${{ github.event.inputs.environment }}
 

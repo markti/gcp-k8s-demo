@@ -63,13 +63,10 @@ jobs:
           -backend-config='prefix='$BACKEND_KEY
 
         terraform apply -auto-approve
-    
-    - name: Set Project ID Output
-      id: set_output
-      run: |
+
         project_id=$(terraform output -raw project_id)
         echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
-
+    
   build:
     runs-on: ubuntu-latest
 

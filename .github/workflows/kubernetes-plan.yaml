@@ -13,7 +13,70 @@ env:
 
 jobs:
 
-  terraform-plan:
+  infrastructure:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ github.event.inputs.environment }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - id: setup
+      name: Setup `terraform`
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+        terraform_wrapper: false
+
+    - name: Create Secret File for Backend
+      env:
+        GOOGLE_BACKEND_CREDENTIALS: ${{ secrets.GOOGLE_BACKEND_CREDENTIALS }}
+      working-directory: ${{ vars.TERRAFORM_WORKING_DIRECTORY }}
+      run: |
+        # Create a local file with the secret value
+        echo -n "$GOOGLE_BACKEND_CREDENTIALS" > gcp-backend.json
+
+    - name: Create Secret File for Terraform
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      working-directory: ${{ vars.TERRAFORM_WORKING_DIRECTORY }}
+      run: |
+        # Create a local file with the secret value
+        echo -n "$GOOGLE_APPLICATION_CREDENTIALS" > gcp-terraform.json
+
+    - id: apply
+      name: Terraform Apply
+      env:
+        GOOGLE_BACKEND_CREDENTIALS: gcp-backend.json
+        GOOGLE_APPLICATION_CREDENTIALS: gcp-terraform.json
+        BACKEND_BUCKET_NAME: ${{ vars.BACKEND_BUCKET_NAME }}
+        BACKEND_KEY: ${{ vars.APPLICATION_NAME }}-${{ vars.ENVIRONMENT_NAME }}
+        TF_VAR_gcp_organization: ${{ vars.GCP_ORGANIZATION_ID }}
+      working-directory: ${{ vars.TERRAFORM_WORKING_DIRECTORY }}
+      run: |
+        terraform init \
+          -backend-config='bucket='$BACKEND_BUCKET_NAME \
+          -backend-config='prefix='$BACKEND_KEY
+
+        terraform apply -auto-approve
+
+        project_id=$(terraform output -raw project_id)
+        echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
+
+        host=$(terraform output -raw host)
+        echo "host=$host" >> "$GITHUB_OUTPUT"
+
+        client_certificate=$(terraform output -raw client_certificate)
+        echo "client_certificate=$client_certificate" >> "$GITHUB_OUTPUT"
+
+        client_key=$(terraform output -raw client_key)
+        echo "client_key=$client_key" >> "$GITHUB_OUTPUT"
+
+        cluster_ca_certificate=$(terraform output -raw cluster_ca_certificate)
+        echo "cluster_ca_certificate=$cluster_ca_certificate" >> "$GITHUB_OUTPUT"
+
+  kubernetes:
     runs-on: ubuntu-latest
 
     environment:
@@ -53,6 +116,10 @@ jobs:
         BACKEND_BUCKET_NAME: ${{ vars.BACKEND_BUCKET_NAME }}
         BACKEND_KEY: ${{ vars.APPLICATION_NAME }}-${{ vars.ENVIRONMENT_NAME }}-k8s
         TF_VAR_gcp_organization: ${{ vars.GCP_ORGANIZATION_ID }}
+        TF_VAR_host: ${{ needs.infrastructure.outputs.host }}
+        TF_VAR_client_certificate: ${{ needs.infrastructure.outputs.client_certificate }}
+        TF_VAR_client_key: ${{ needs.infrastructure.outputs.client_key }}
+        TF_VAR_cluster_ca_certificate: ${{ needs.infrastructure.outputs.cluster_ca_certificate }}
       working-directory: ${{ vars.K8S_WORKING_DIRECTORY }}
       run: |
         terraform init \

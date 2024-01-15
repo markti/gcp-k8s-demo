@@ -1,5 +1,5 @@
 resource "google_service_account" "cluster" {
-  project      = google_project.main.id
+  project      = google_project.main.project_id
   account_id   = "sa-gke-${var.application_name}-${var.environment_name}-${random_string.project_id.result}"
   display_name = "sa-gke-${var.application_name}-${var.environment_name}-${random_string.project_id.result}"
 }

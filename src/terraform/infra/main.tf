@@ -1,5 +1,6 @@
 data "google_billing_account" "main" {
-  display_name = "Default"
+  display_name    = "Default"
+  lookup_projects = false
 }
 
 data "google_client_config" "current" {

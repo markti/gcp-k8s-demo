@@ -1,4 +1,4 @@
-resource "google_project_service" "container" {
+/*resource "google_project_service" "container" {
   project = google_project.main.project_id
   service = "containerregistry.googleapis.com"
 
@@ -9,3 +9,4 @@ resource "google_project_service" "container" {
 
   disable_dependent_services = true
 }
+*/

@@ -22,11 +22,10 @@ resource "google_container_node_pool" "primary" {
   name       = "gke-${var.application_name}-${var.environment_name}-${random_string.project_id.result}-primary"
   location   = var.primary_region
   cluster    = google_container_cluster.main.name
-  node_count = 1
+  node_count = var.node_count
 
   node_config {
-    preemptible  = true
-    machine_type = "e2-medium"
+    machine_type = var.node_size
 
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     service_account = google_service_account.cluster.email

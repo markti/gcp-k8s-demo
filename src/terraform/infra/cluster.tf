@@ -4,7 +4,7 @@ resource "google_service_account" "cluster" {
   display_name = "sa-gke-${var.application_name}-${var.environment_name}-${random_string.project_id.result}"
 }
 
-
+/*
 resource "google_container_cluster" "main" {
   project  = google_project.main.project_id
   name     = "gke-${var.application_name}-${var.environment_name}-${random_string.project_id.result}"
@@ -35,3 +35,4 @@ resource "google_container_node_pool" "primary" {
     ]
   }
 }
+*/

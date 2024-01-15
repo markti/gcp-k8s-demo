@@ -1,6 +1,6 @@
-/*data "google_billing_account" "main" {
+data "google_billing_account" "main" {
   display_name = "Default"
-}*/
+}
 
 data "google_client_config" "current" {
 }

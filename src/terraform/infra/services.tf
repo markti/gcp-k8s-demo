@@ -10,7 +10,7 @@ resource "google_project_service" "container_registry" {
 
   disable_dependent_services = true
 }
-/*
+
 resource "google_project_service" "container" {
 
   project = google_project.main.project_id
@@ -23,4 +23,3 @@ resource "google_project_service" "container" {
 
   disable_dependent_services = true
 }
-*/

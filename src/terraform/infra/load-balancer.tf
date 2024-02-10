@@ -6,9 +6,9 @@ resource "google_compute_global_address" "frontend" {
 
 resource "google_compute_backend_service" "frontend" {
   name    = "backend-service"
-  project = google_project.frontend.project_id
+  project = google_project.main.project_id
   backend {
-    group = google_container_cluster.my_cluster.node_pool.0.instances_group_links[0]
+    group = google_container_node_pool.primary.instances_group_links[0]
   }
 }
 

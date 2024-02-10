@@ -8,7 +8,7 @@ resource "google_compute_backend_service" "frontend" {
   name    = "backend-service"
   project = google_project.main.project_id
   backend {
-    group = google_container_node_pool.primary.instances_group_urls
+    group = google_container_node_pool.primary.instance_group_urls
   }
 }
 

@@ -13,6 +13,9 @@ variable "container_registry_location" {
 variable "gcp_organization" {
   type = string
 }
+variable "network_cidr_block" {
+  type = string
+}
 variable "node_size" {
   type = string
 }

@@ -14,6 +14,14 @@ resource "google_container_cluster" "main" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
+
+  release_channel {
+    channel = "REGULAR"
+  }
+
+  network    = google_compute_network.main.self_link
+  subnetwork = google_compute_subnetwork.backend.self_link
+
 }
 
 resource "google_container_node_pool" "primary" {

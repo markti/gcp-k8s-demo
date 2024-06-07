@@ -43,8 +43,20 @@ resource "google_container_node_pool" "primary" {
   }
 }
 
+locals {
+  cluster_admin_roles = [
+    "roles/container.clusterAdmin",
+    "roles/container.developer",
+    "roles/container.viewer"
+  ]
+}
+
 resource "google_project_iam_member" "terraform_cluster_admin" {
+
+  count = length(local.cluster_admin_roles)
+
   project = google_project.main.project_id
   member  = "serviceAccount:${data.google_client_openid_userinfo.provider_identity.email}"
-  role    = "roles/container.clusterAdmin"
+  role    = local.cluster_admin_roles[count.index]
+
 }

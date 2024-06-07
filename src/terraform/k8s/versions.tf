@@ -21,7 +21,7 @@ provider "google" {
 
 data "google_container_cluster" "main" {
   name     = var.cluster_name
-  location = "us-east1-a"
+  location = var.primary_region
 }
 
 /*

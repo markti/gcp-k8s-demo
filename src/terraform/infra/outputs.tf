@@ -10,9 +10,12 @@ output "kubernetes_cluster_name" {
 output "primary_region" {
   value = var.primary_region
 }
+output "container_registry_endpoint" {
+  value = "${var.primary_region}-docker.pkg.dev/${google_project.main.project_id}"
+}
 output "frontend_registry" {
-  value = "${var.primary_region}-docker.pkg.dev/${google_project.main.project_id}/${google_artifact_registry_repository.frontend.name}"
+  value = google_artifact_registry_repository.frontend.name
 }
 output "backend_registry" {
-  value = "${var.primary_region}-docker.pkg.dev/${google_project.main.project_id}/${google_artifact_registry_repository.frontend.name}"
+  value = google_artifact_registry_repository.backend.name
 }

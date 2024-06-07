@@ -14,10 +14,7 @@ resource "google_container_cluster" "main" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
-
-  release_channel {
-    channel = "REGULAR"
-  }
+  deletion_protection      = false
 
   network    = google_compute_network.main.self_link
   subnetwork = google_compute_subnetwork.backend.self_link
@@ -33,12 +30,15 @@ resource "google_container_node_pool" "primary" {
   node_count = var.node_count
 
   node_config {
+    preemptible  = false
     machine_type = var.node_size
 
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     service_account = google_service_account.cluster.email
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
     ]
   }
 }

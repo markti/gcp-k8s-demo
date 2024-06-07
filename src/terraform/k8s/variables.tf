@@ -1,12 +1,16 @@
-variable "registry_endpoint" {
-  description = "The endpoint of the container registry"
-  type        = string
-}
+
 variable "application_name" {
   type = string
 }
 variable "environment_name" {
   type = string
+}
+variable "primary_region" {
+  type = string
+}
+variable "registry_endpoint" {
+  description = "The endpoint of the container registry"
+  type        = string
 }
 variable "namespace" {
   type = string

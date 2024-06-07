@@ -1,14 +1,11 @@
 application_name = "fleet-ops"
 environment_name = "dev"
 k8s_namespace    = "app"
-/*
 web_app_image = {
   name    = "fleetops-frontend"
-  version = "2023.11.8"
+  version = "2024.06.3"
 }
 web_api_image = {
   name    = "fleetops-backend"
-  version = "2023.11.6"
+  version = "2024.06.10"
 }
-backend_endpoint = "http://20.14.7.63"
-*/

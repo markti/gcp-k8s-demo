@@ -1,4 +1,4 @@
-/*
+
 locals {
   web_app_name = "fleet-portal"
 }
@@ -6,7 +6,7 @@ locals {
 resource "kubernetes_deployment" "web_app" {
   metadata {
     name      = local.web_app_name
-    namespace = var.namespace
+    namespace = var.k8s_namespace
   }
 
   spec {
@@ -30,7 +30,7 @@ resource "kubernetes_deployment" "web_app" {
           "agentpool" = "workloadpool"
         }
         container {
-          image = "${var.registry_endpoint}/${var.web_app_image.name}:${var.web_app_image.version}"
+          image = "gcr.io/${var.gcp_project}/${var.web_app_image.name}:${var.web_app_image.version}"
           name  = local.web_app_name
           port {
             container_port = 5000
@@ -41,12 +41,6 @@ resource "kubernetes_deployment" "web_app" {
             }
           }
         }
-        toleration {
-          key      = "workload"
-          operator = "Equal"
-          value    = "true"
-          effect   = "NoSchedule"
-        }
       }
     }
   }
@@ -55,10 +49,10 @@ resource "kubernetes_deployment" "web_app" {
 resource "kubernetes_service" "web_app" {
   metadata {
     name      = "${local.web_app_name}-service"
-    namespace = var.namespace
+    namespace = var.k8s_namespace
   }
   spec {
-    type = "LoadBalancer"
+    type = "ClusterIP"
     port {
       port        = 80
       target_port = 5000
@@ -72,11 +66,10 @@ resource "kubernetes_service" "web_app" {
 resource "kubernetes_config_map" "web_app" {
   metadata {
     name      = "${local.web_app_name}-config"
-    namespace = var.namespace
+    namespace = var.k8s_namespace
   }
 
   data = {
-    BackendEndpoint = var.backend_endpoint
+    BackendEndpoint = ""
   }
 }
-*/

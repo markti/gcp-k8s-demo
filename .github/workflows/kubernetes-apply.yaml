@@ -107,8 +107,8 @@ jobs:
         # Create a local file with the secret value
         echo -n "$GOOGLE_APPLICATION_CREDENTIALS" > gcp-terraform.json
 
-    - id: plan
-      name: Terraform Plan
+    - id: apply
+      name: Terraform Apply
       env:
         GOOGLE_BACKEND_CREDENTIALS: gcp-backend.json
         GOOGLE_APPLICATION_CREDENTIALS: gcp-terraform.json

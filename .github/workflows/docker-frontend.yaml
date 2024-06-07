@@ -153,4 +153,4 @@ jobs:
       with:
         context: ${{ env.DOCKER_WORKING_DIRECTORY }}
         push: true
-        tags: ${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
+        tags: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}

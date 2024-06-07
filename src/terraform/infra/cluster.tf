@@ -50,7 +50,9 @@ locals {
   cluster_admin_roles = [
     "roles/container.clusterAdmin",
     "roles/container.developer",
-    "roles/container.viewer"
+    "roles/container.viewer",
+    "roles/artifactregistry.writer",
+    "roles/artifactregistry.reader"
   ]
 }
 

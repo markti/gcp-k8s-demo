@@ -15,13 +15,13 @@ terraform {
 
 # Configure the GCP Provider
 provider "google" {
-  region = var.primary_region
+  region  = var.primary_region
+  project = var.gcp_project
 }
 
 data "google_container_cluster" "main" {
   name     = var.cluster_name
   location = "us-east1-a"
-  project  = var.gcp_project
 }
 
 /*

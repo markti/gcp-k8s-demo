@@ -45,6 +45,6 @@ resource "google_container_node_pool" "primary" {
 
 resource "google_project_iam_member" "terraform_cluster_admin" {
   project = google_project.main.project_id
-  member  = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
+  member  = "serviceAccount:${data.google_client_openid_userinfo.provider_identity.email}"
   role    = "roles/container.clusterAdmin"
 }

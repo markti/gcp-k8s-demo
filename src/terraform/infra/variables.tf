@@ -1,3 +1,6 @@
+variable "gcp_organization" {
+  type = string
+}
 variable "application_name" {
   type = string
 }
@@ -8,9 +11,6 @@ variable "primary_region" {
   type = string
 }
 variable "container_registry_location" {
-  type = string
-}
-variable "gcp_organization" {
   type = string
 }
 variable "network_cidr_block" {

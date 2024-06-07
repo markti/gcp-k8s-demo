@@ -15,6 +15,10 @@ jobs:
 
   infrastructure:
     runs-on: ubuntu-latest
+    outputs:
+      project_id: ${{ steps.apply.outputs.project_id }}
+      primary_region: ${{ steps.apply.outputs.primary_region }}
+      kubernetes_cluster_name: ${{ steps.apply.outputs.kubernetes_cluster_name }}
 
     environment:
       name: ${{ github.event.inputs.environment }}
@@ -64,17 +68,11 @@ jobs:
         project_id=$(terraform output -raw project_id)
         echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
 
-        host=$(terraform output -raw host)
-        echo "host=$host" >> "$GITHUB_OUTPUT"
+        primary_region=$(terraform output -raw primary_region)
+        echo "primary_region=$primary_region" >> "$GITHUB_OUTPUT"
 
-        client_certificate=$(terraform output -raw client_certificate)
-        echo "client_certificate=$client_certificate" >> "$GITHUB_OUTPUT"
-
-        client_key=$(terraform output -raw client_key)
-        echo "client_key=$client_key" >> "$GITHUB_OUTPUT"
-
-        cluster_ca_certificate=$(terraform output -raw cluster_ca_certificate)
-        echo "cluster_ca_certificate=$cluster_ca_certificate" >> "$GITHUB_OUTPUT"
+        kubernetes_cluster_name=$(terraform output -raw kubernetes_cluster_name)
+        echo "kubernetes_cluster_name=$kubernetes_cluster_name" >> "$GITHUB_OUTPUT"
 
   kubernetes:
     needs: [infrastructure]
@@ -117,10 +115,9 @@ jobs:
         BACKEND_BUCKET_NAME: ${{ vars.BACKEND_BUCKET_NAME }}
         BACKEND_KEY: ${{ vars.APPLICATION_NAME }}-${{ vars.ENVIRONMENT_NAME }}-k8s
         TF_VAR_gcp_organization: ${{ vars.GCP_ORGANIZATION_ID }}
-        TF_VAR_host: ${{ needs.infrastructure.outputs.host }}
-        TF_VAR_client_certificate: ${{ needs.infrastructure.outputs.client_certificate }}
-        TF_VAR_client_key: ${{ needs.infrastructure.outputs.client_key }}
-        TF_VAR_cluster_ca_certificate: ${{ needs.infrastructure.outputs.cluster_ca_certificate }}
+        TF_VAR_gcp_project: ${{ needs.infra.outputs.project_id }}
+        TF_VAR_cluster_name: ${{ needs.infra.outputs.kubernetes_cluster_name }}
+        TF_VAR_primary_region: ${{ needs.infra.outputs.primary_region }}
       working-directory: ${{ vars.K8S_WORKING_DIRECTORY }}
       run: |
         terraform init \

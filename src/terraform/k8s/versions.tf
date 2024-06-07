@@ -18,6 +18,13 @@ provider "google" {
   region = var.primary_region
 }
 
+data "google_container_cluster" "main" {
+  name     = var.cluster_name
+  location = "us-east1-a"
+  project  = var.gcp_project
+}
+
+/*
 provider "kubernetes" {
 
   host                   = var.host
@@ -26,3 +33,4 @@ provider "kubernetes" {
   cluster_ca_certificate = var.cluster_ca_certificate
 
 }
+*/

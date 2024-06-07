@@ -144,7 +144,7 @@ jobs:
     - name: Login to Google Container Registry
       uses: docker/login-action@v3
       with:
-        registry: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}
+        registry: https://${{ needs.terraform-apply.outputs.container_registry_endpoint }}
         username: _json_key
         password: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 

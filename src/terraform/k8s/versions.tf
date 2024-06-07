@@ -24,8 +24,12 @@ data "google_container_cluster" "main" {
   location = var.primary_region
 }
 
+data "google_client_config" "current" {
+}
+
 provider "kubernetes" {
 
+  token                  = data.google_client_config.current.access_token
   host                   = data.google_container_cluster.main.endpoint
   client_certificate     = base64decode(data.google_container_cluster.main.master_auth.0.client_certificate)
   client_key             = base64decode(data.google_container_cluster.main.master_auth.0.client_key)

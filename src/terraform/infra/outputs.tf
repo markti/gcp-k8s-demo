@@ -11,7 +11,7 @@ output "primary_region" {
   value = var.primary_region
 }
 output "container_registry_endpoint" {
-  value = "${var.primary_region}-docker.pkg.dev/${google_project.main.project_id}"
+  value = "${var.primary_region}-docker.pkg.dev"
 }
 output "frontend_registry" {
   value = google_artifact_registry_repository.frontend.name

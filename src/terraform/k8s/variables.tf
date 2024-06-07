@@ -16,13 +16,13 @@ variable "primary_region" {
 variable "cluster_name" {
   type = string
 }
+variable "k8s_namespace" {
+  type = string
+}
 /*
 variable "registry_endpoint" {
   description = "The endpoint of the container registry"
   type        = string
-}
-variable "namespace" {
-  type = string
 }
 variable "web_app_image" {
   type = object({

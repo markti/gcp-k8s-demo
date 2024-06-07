@@ -21,6 +21,7 @@ jobs:
 
     outputs:
       project_id: ${{ steps.apply.outputs.project_id }}
+      container_registry: ${{ steps.apply.outputs.container_registry }}
 
     environment:
       name: ${{ github.event.inputs.environment }}
@@ -69,6 +70,9 @@ jobs:
 
         project_id=$(terraform output -raw project_id)
         echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
+
+        container_registry=$(terraform output -raw frontend_registry)
+        echo "container_registry=$container_registry" >> "$GITHUB_OUTPUT"
     
   build:
     runs-on: ubuntu-latest
@@ -145,4 +149,4 @@ jobs:
       with:
         context: ${{ env.DOCKER_WORKING_DIRECTORY }}
         push: true
-        tags: gcr.io/${{ needs.terraform-apply.outputs.project_id }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-version.outputs.version }}
+        tags: ${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}

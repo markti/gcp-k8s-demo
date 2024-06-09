@@ -170,4 +170,4 @@ jobs:
 
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend:2024.06.13
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend
-Error: buildx failed with: ERROR: failed to solve: failed to push : unexpected status from HEAD request to https://us-central1-docker.pkg.dev/v2/fleet-ops-dev-ci3m88hs/frontend/manifests/sha256:0a661bc65d5782b79bc77a5c749afc4233d57b3049a93fb723e3257a6ca9dfb4: 400 Bad Request
+#Error: buildx failed with: ERROR: failed to solve: failed to push : unexpected status from HEAD request to https://us-central1-docker.pkg.dev/v2/fleet-ops-dev-ci3m88hs/frontend/manifests/sha256:0a661bc65d5782b79bc77a5c749afc4233d57b3049a93fb723e3257a6ca9dfb4: 400 Bad Request

@@ -21,6 +21,7 @@ jobs:
 
     outputs:
       project_id: ${{ steps.apply.outputs.project_id }}
+      primary_region: ${{ steps.apply.outputs.primary_region }}
       container_registry: ${{ steps.apply.outputs.container_registry }}
       container_registry_endpoint: ${{ steps.apply.outputs.container_registry_endpoint }}
 
@@ -71,6 +72,9 @@ jobs:
 
         project_id=$(terraform output -raw project_id)
         echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
+
+        primary_region=$(terraform output -raw primary_region)
+        echo "primary_region=$primary_region" >> "$GITHUB_OUTPUT"
 
         container_registry_endpoint=$(terraform output -raw container_registry_endpoint)
         echo "container_registry_endpoint=$container_registry_endpoint" >> "$GITHUB_OUTPUT"
@@ -147,8 +151,10 @@ jobs:
         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
     - name: Configure docker
+      env: 
+        PRIMARY_REGION: ${{ needs.terraform-apply.outputs.primary_region }}
       run: |
-        gcloud auth configure-docker
+        gcloud auth configure-docker $PRIMARY_REGION'-docker.pkg.dev'
 
     - name: Build and push Docker image to ACR
       uses: docker/build-push-action@v5

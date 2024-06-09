@@ -156,14 +156,6 @@ jobs:
       run: |
         gcloud auth configure-docker $PRIMARY_REGION'-docker.pkg.dev'
 
-    - name: Build and push Docker image
-      working-directory: ${{ env.DOCKER_WORKING_DIRECTORY }}
-      env:
-        DOCKER_IMAGE_NAME: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
-      run: |
-        docker build -t $DOCKER_IMAGE_NAME .
-        docker push $DOCKER_IMAGE_NAME
-
     - name: Build and push Docker image to ACR
       uses: docker/build-push-action@v5
       with:

@@ -157,6 +157,7 @@ jobs:
         gcloud auth configure-docker $PRIMARY_REGION'-docker.pkg.dev'
 
     - name: Build and push Docker image
+      working-directory: ${{ env.DOCKER_WORKING_DIRECTORY }}
       run: |
         docker build -t ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }} .
         docker push ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}

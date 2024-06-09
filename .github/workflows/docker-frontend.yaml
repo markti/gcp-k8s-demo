@@ -159,7 +159,7 @@ jobs:
     - name: Build and push Docker image
       working-directory: ${{ env.DOCKER_WORKING_DIRECTORY }}
       env:
-        DOCKER_IMAGE_NAME: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
+        DOCKER_IMAGE_NAME: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
       run: |
         docker build -t $DOCKER_IMAGE_NAME .
         docker push $DOCKER_IMAGE_NAME
@@ -174,3 +174,11 @@ jobs:
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend:2024.06.13
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend
 #Error: buildx failed with: ERROR: failed to solve: failed to push : unexpected status from HEAD request to https://us-central1-docker.pkg.dev/v2/fleet-ops-dev-ci3m88hs/frontend/manifests/sha256:0a661bc65d5782b79bc77a5c749afc4233d57b3049a93fb723e3257a6ca9dfb4: 400 Bad Request
+
+
+#HOST-NAME/PROJECT-ID/REPOSITORY/IMAGE
+#HOST-NAME=${{ needs.terraform-apply.outputs.container_registry_endpoint }}
+#/
+#PROJECT-ID=${{ needs.terraform-apply.outputs.project_id }}
+#/
+#REPOSITORY=${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}

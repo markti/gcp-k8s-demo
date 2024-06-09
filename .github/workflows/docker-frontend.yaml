@@ -169,7 +169,7 @@ jobs:
       with:
         context: ${{ env.DOCKER_WORKING_DIRECTORY }}
         push: true
-        tags: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
+        tags: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
 
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend:2024.06.13
 #us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend

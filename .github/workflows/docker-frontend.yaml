@@ -156,9 +156,18 @@ jobs:
       run: |
         gcloud auth configure-docker $PRIMARY_REGION'-docker.pkg.dev'
 
+    - name: Build and push Docker image
+      run: |
+        docker build -t ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }} .
+        docker push ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
+
     - name: Build and push Docker image to ACR
       uses: docker/build-push-action@v5
       with:
         context: ${{ env.DOCKER_WORKING_DIRECTORY }}
         push: true
         tags: ${{ needs.terraform-apply.outputs.container_registry_endpoint }}/${{ needs.terraform-apply.outputs.project_id }}/${{ needs.terraform-apply.outputs.container_registry }}:${{ steps.image-version.outputs.version }}
+
+#us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend:2024.06.13
+#us-central1-docker.pkg.dev/fleet-ops-dev-ci3m88hs/frontend
+Error: buildx failed with: ERROR: failed to solve: failed to push : unexpected status from HEAD request to https://us-central1-docker.pkg.dev/v2/fleet-ops-dev-ci3m88hs/frontend/manifests/sha256:0a661bc65d5782b79bc77a5c749afc4233d57b3049a93fb723e3257a6ca9dfb4: 400 Bad Request

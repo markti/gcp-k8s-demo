@@ -1,4 +1,4 @@
-/*
+
 locals {
   web_api_name = "fleet-api"
 }
@@ -6,7 +6,7 @@ locals {
 resource "kubernetes_deployment" "web_api" {
   metadata {
     name      = local.web_api_name
-    namespace = var.namespace
+    namespace = var.k8s_namespace
   }
 
   spec {
@@ -26,21 +26,17 @@ resource "kubernetes_deployment" "web_api" {
       }
 
       spec {
-        node_selector = {
-          "agentpool" = "workloadpool"
-        }
         container {
-          image = "${var.registry_endpoint}/${var.web_api_image.name}:${var.web_api_image.version}"
+          image = "${var.primary_region}-docker.pkg.dev/${var.gcp_project}/${var.web_api_image.name}:${var.web_api_image.version}"
           name  = local.web_api_name
           port {
             container_port = 5000
           }
-        }
-        toleration {
-          key      = "workload"
-          operator = "Equal"
-          value    = "true"
-          effect   = "NoSchedule"
+          env_from {
+            config_map_ref {
+              name = kubernetes_config_map.web_app.metadata.0.name
+            }
+          }
         }
       }
     }
@@ -50,10 +46,10 @@ resource "kubernetes_deployment" "web_api" {
 resource "kubernetes_service" "web_api" {
   metadata {
     name      = "${local.web_api_name}-service"
-    namespace = var.namespace
+    namespace = var.k8s_namespace
   }
   spec {
-    type = "LoadBalancer"
+    type = "ClusterIP"
     port {
       port        = 80
       target_port = 5000
@@ -63,4 +59,14 @@ resource "kubernetes_service" "web_api" {
     }
   }
 }
-*/
+
+resource "kubernetes_config_map" "web_api" {
+  metadata {
+    name      = "${local.web_api_name}-config"
+    namespace = var.k8s_namespace
+  }
+
+  data = {
+    DatabaseConnectionString = ""
+  }
+}

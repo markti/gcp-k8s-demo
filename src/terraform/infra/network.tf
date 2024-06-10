@@ -34,8 +34,10 @@ resource "google_compute_firewall" "allow_internet" {
     protocol = "icmp"
   }
 
-  direction   = "EGRESS"
-  description = "Allow internet access"
+  direction          = "EGRESS"
+  description        = "Allow internet access"
+  destination_ranges = ["0.0.0.0/0"]
+  source_ranges      = [google_compute_subnetwork.backend.ip_cidr_range]
 
   priority = 1000
 }

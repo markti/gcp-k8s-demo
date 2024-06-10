@@ -15,7 +15,7 @@ resource "helm_release" "csi_secrets_store" {
 resource "helm_release" "gcp_secrets_provider" {
 
   name       = "secrets-store-csi-driver-provider-gcp"
-  repository = "https://github.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/charts"
+  repository = "https://googlecloudplatform.github.io/secrets-store-csi-driver-provider-gcp"
   chart      = "secrets-store-csi-driver-provider-gcp"
   namespace  = "kube-system"
 

@@ -4,3 +4,4 @@
 **/.debug.sh
 **/.debug.tfvars
 **/gcp-key.json
+**/.DS_Store

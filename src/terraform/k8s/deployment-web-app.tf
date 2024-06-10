@@ -27,6 +27,7 @@ resource "kubernetes_deployment" "web_app" {
 
       spec {
         container {
+          image = ${var.primary_region}-docker.pkg.dev/:2024.06.21
           image = "gcr.io/${var.gcp_project}/${var.web_app_image.name}:${var.web_app_image.version}"
           name  = local.web_app_name
           port {

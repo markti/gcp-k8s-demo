@@ -7,5 +7,5 @@ web_app_image = {
 }
 web_api_image = {
   name    = "backend/backend"
-  version = "2024.06.12"
+  version = "2024.06.13"
 }

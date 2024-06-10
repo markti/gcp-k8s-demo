@@ -21,6 +21,7 @@ resource "google_compute_subnetwork" "backend" {
 
 resource "google_compute_firewall" "allow_internet" {
 
+  project = google_project.main.project_id
   name    = "allow-internet"
   network = google_compute_network.main.self_link
 

@@ -6,6 +6,6 @@ web_app_image = {
   version = "2024.06.21"
 }
 web_api_image = {
-  name    = "fleetops-backend"
-  version = "2024.06.10"
+  name    = "backend/backend"
+  version = "2024.06.11"
 }

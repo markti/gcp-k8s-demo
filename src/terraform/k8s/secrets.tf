@@ -11,7 +11,7 @@ resource "helm_release" "csi_secrets_store" {
   }
 
 }
-
+/*
 resource "helm_release" "gcp_secrets_provider" {
 
   name       = "secrets-store-csi-driver-provider-gcp"
@@ -20,5 +20,5 @@ resource "helm_release" "gcp_secrets_provider" {
   namespace  = "kube-system"
 
 }
-
+*/
 #helm upgrade --install secrets-store-csi-driver-provider-gcp charts/secrets-store-csi-driver-provider-gcp

@@ -1,4 +1,4 @@
-/*
+
 resource "helm_release" "csi_secrets_store" {
 
   name       = "csi-secrets-store"
@@ -12,7 +12,7 @@ resource "helm_release" "csi_secrets_store" {
   }
 
 }
-*/
+
 /*
 resource "helm_release" "gcp_secrets_provider" {
 

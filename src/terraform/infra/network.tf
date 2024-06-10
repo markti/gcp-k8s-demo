@@ -18,3 +18,23 @@ resource "google_compute_subnetwork" "backend" {
   network       = google_compute_network.main.self_link
   ip_cidr_range = cidrsubnet(var.network_cidr_block, 2, 2)
 }
+
+resource "google_compute_firewall" "allow_internet" {
+
+  name    = "allow-internet"
+  network = google_compute_network.main.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  allow {
+    protocol = "icmp"
+  }
+
+  direction   = "EGRESS"
+  description = "Allow internet access"
+
+  priority = 1000
+}

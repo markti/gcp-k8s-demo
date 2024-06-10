@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FleetAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -21,6 +21,8 @@ namespace FleetAPI.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            string dbConnStr = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

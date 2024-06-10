@@ -6,3 +6,4 @@ gcloud components install gke-gcloud-auth-plugin
 
 gcloud container clusters get-credentials gke-fleet-ops-dev-ci3m88hs --region us-central1 --project fleet-ops-dev-ci3m88hs
 
+kubectl get svc -n ingress-nginx

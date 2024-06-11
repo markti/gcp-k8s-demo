@@ -12,6 +12,10 @@ resource "google_container_cluster" "main" {
   network    = google_compute_network.main.self_link
   subnetwork = google_compute_subnetwork.backend.self_link
 
+  workload_identity_config {
+    workload_pool = "${google_project.main.project_id}.svc.id.goog"
+  }
+
 }
 
 resource "google_container_node_pool" "primary" {

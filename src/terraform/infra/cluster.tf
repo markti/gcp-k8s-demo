@@ -32,6 +32,10 @@ resource "google_container_node_pool" "primary" {
     spot         = false
     machine_type = var.node_size
 
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
+
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     service_account = google_service_account.cluster.email
     oauth_scopes = [
